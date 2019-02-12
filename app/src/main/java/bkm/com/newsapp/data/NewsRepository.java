@@ -58,7 +58,7 @@ public class NewsRepository {
             @Override
             public void run() {
                 if (isFetchNeeded()) {
-//                    starFetchNewsService();
+                    starFetchNewsService();
                 }
             }
         });
@@ -68,7 +68,11 @@ public class NewsRepository {
     }
 
     private boolean isFetchNeeded() {
-        return false;
+        return true;
+    }
+
+    private void starFetchNewsService() {
+        mNewsNetworkDataSource.startFetchNewsService();
     }
 
     public LiveData<List<NewsEntry>> getCurrentNews() {

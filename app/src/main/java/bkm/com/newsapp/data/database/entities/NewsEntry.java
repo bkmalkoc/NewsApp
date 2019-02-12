@@ -3,15 +3,13 @@ package bkm.com.newsapp.data.database.entities;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
 
 import java.util.Date;
 
 @Entity(tableName = "news")
 public class NewsEntry {
-    @PrimaryKey
-    @NonNull
-    private String id;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     private String name;
     private String author;
     private String title;
@@ -33,7 +31,7 @@ public class NewsEntry {
         this.content = content;
     }
 
-    public NewsEntry(String id, String name, String author, String title, String description, String url, String urlToImage, Date publishedAt, String content) {
+    public NewsEntry(int id, String name, String author, String title, String description, String url, String urlToImage, Date publishedAt, String content) {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -45,7 +43,7 @@ public class NewsEntry {
         this.content = content;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

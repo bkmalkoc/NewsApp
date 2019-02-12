@@ -22,7 +22,7 @@ final class NewsJsonParser {
 
             switch (errorCode) {
                 case "ok":
-                return true;
+                return false;
             }
         }
         return false;
@@ -42,20 +42,20 @@ final class NewsJsonParser {
     }
 
     private static NewsEntry fromJsonOfArticle(final JSONObject article) throws JSONException, ParseException {
+        JSONObject source = article.getJSONObject("source");
+        String id = source.isNull("id") ? "" : source.getString("id");
 
-        String id = article.getJSONObject("source").getJSONObject("id").toString();
-
-        String author = article.getJSONObject("author").toString();
-        String title = article.getJSONObject("title").toString();
-        String description = article.getJSONObject("description").toString();
-        String url = article.getJSONObject("url").toString();
-        String urlToImage = article.getJSONObject("urlToImage").toString();
-        String publishedAt = article.getJSONObject("publishedAt").toString();
-
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        String author = article.isNull("author") ? "" : article.getString("author");
+        String title = article.getString("title");
+        String description = article.getString("description").toString();
+        String url = article.getString("url");
+        String urlToImage = article.getString("urlToImage");
+        String publishedAt = article.getString("publishedAt");
+        // "2019-02-12T00:47:00Z"
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         Date date = format.parse(publishedAt);
 
-        String content = article.getJSONObject("content").toString();
+        String content = article.getString("content");
 
         return new NewsEntry(id, author, title, description, url, urlToImage, date, content);
 

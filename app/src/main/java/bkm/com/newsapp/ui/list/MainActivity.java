@@ -10,6 +10,7 @@ import java.util.List;
 
 import bkm.com.newsapp.R;
 import bkm.com.newsapp.data.database.entities.NewsEntry;
+import bkm.com.newsapp.utilities.InjectorUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,7 +21,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        MainViewModelFactory factory = InjectorUtils.provideMainActivityViewModelFactory(this.getApplicationContext());
+        mViewModel = ViewModelProviders.of(this, factory).get(MainActivityViewModel.class);
+
         mViewModel.getNews().observe(this, new Observer<List<NewsEntry>>() {
             @Override
             public void onChanged(@Nullable List<NewsEntry> newsEntries) {

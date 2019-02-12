@@ -3,6 +3,7 @@ package bkm.com.newsapp.data.network;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import java.net.URL;
@@ -38,6 +39,12 @@ public class NewsNetworkDataSource {
         return sInstance;
     }
 
+    public void startFetchNewsService() {
+        Intent intentToFetch = new Intent(mContext, NewsSyncIntentService.class);
+        mContext.startService(intentToFetch);
+        Log.d(LOG_TAG, "Service created");
+    }
+
     public LiveData<NewsEntry[]> getCurrentNews() {
         return mDownloadedNews;
     }
@@ -48,10 +55,6 @@ public class NewsNetworkDataSource {
             @Override
             public void run() {
                 try {
-
-                    // The getUrl method will return the URL that we need to get the forecast JSON for the
-                    // weather. It will decide whether to create a URL based off of the latitude and
-                    // longitude or off of a simple location as a String.
 
                     URL weatherRequestUrl = NetworkUtils.getUrl();
 
