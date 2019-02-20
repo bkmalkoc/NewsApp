@@ -6,6 +6,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
+import java.util.Date;
 import java.util.List;
 
 import bkm.com.newsapp.data.database.entities.NewsEntry;
@@ -18,4 +19,10 @@ public interface NewsDao {
 
     @Query("SELECT * FROM news")
     LiveData<List<NewsEntry>> getTopAndBreakingNews();
+
+    @Query("SELECT count(id) FROM news WHERE publishedAt >= :date")
+    int countAllFutureNews(Date date);
+
+    @Query("DELETE FROM news WHERE publishedAt < :date")
+    void deleteOldNews(Date date);
 }

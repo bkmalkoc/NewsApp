@@ -25,6 +25,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation "com.android.support:recyclerview-v7:$support_version"
     implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
+    implementation "com.android.support:cardview-v7:$support_version"
 
     // Room components
     implementation "android.arch.persistence.room:runtime:$roomVersion"
@@ -35,6 +36,9 @@ dependencies {
     implementation "android.arch.lifecycle:runtime:$archLifecycleVersion"
     implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
+
+    //Image processing
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
     // Test components
     testImplementation 'junit:junit:4.12'

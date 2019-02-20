@@ -4,12 +4,14 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.support.annotation.Nullable;
 
+import java.util.Date;
 import java.util.List;
 
 import bkm.com.newsapp.data.database.daos.NewsDao;
 import bkm.com.newsapp.data.database.entities.NewsEntry;
 import bkm.com.newsapp.data.network.NewsNetworkDataSource;
 import bkm.com.newsapp.utilities.AppExecutors;
+import bkm.com.newsapp.utilities.NewsDateUtilis;
 
 public class NewsRepository {
 
@@ -65,6 +67,9 @@ public class NewsRepository {
     }
 
     private void deleteOldData() {
+        Date today = NewsDateUtilis.getNormalizedUtcDateForToday();
+        int count = mNewsDao.countAllFutureNews(today);
+        mNewsDao.deleteOldNews(today);
     }
 
     private boolean isFetchNeeded() {
