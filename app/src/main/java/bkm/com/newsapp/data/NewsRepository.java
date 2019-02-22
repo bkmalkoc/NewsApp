@@ -56,6 +56,8 @@ public class NewsRepository {
         if (mInitialized) return;
         mInitialized = true;
 
+        mNewsNetworkDataSource.scheduleRecurringFetchNewsSync();
+
         mExecutors.diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -68,7 +70,6 @@ public class NewsRepository {
 
     private void deleteOldData() {
         Date today = NewsDateUtilis.getNormalizedUtcDateForToday();
-        int count = mNewsDao.countAllFutureNews(today);
         mNewsDao.deleteOldNews(today);
     }
 

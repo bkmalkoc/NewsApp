@@ -38,7 +38,6 @@ public class NewsAdapter extends MyBaseAdapter {
     public static void loadImage(ImageView view, String imageUrl) {
         Picasso.with(view.getContext())
                 .load(imageUrl)
-                .fit()
                 .placeholder(R.drawable.tv_placeholder)
                 .into(view);
     }

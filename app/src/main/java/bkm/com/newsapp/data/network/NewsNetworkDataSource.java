@@ -6,7 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.firebase.jobdispatcher.Constraint;
+import com.firebase.jobdispatcher.Driver;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.Trigger;
+
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import bkm.com.newsapp.data.database.entities.NewsEntry;
 import bkm.com.newsapp.utilities.AppExecutors;
@@ -14,6 +23,10 @@ import bkm.com.newsapp.utilities.AppExecutors;
 public class NewsNetworkDataSource {
 
     private static final String LOG_TAG = NewsNetworkDataSource.class.getSimpleName();
+    private static final String NEWS_SYNC_TAG = "NEWS-SYNC";
+    private static final int SYNC_INTERVAL_HOURS = 3;
+    private static final int SYNC_INTERVAL_SECONDS = (int) TimeUnit.HOURS.toSeconds(SYNC_INTERVAL_HOURS);
+    private static final int SYNC_FLEXTIME_SECONDS = SYNC_INTERVAL_SECONDS / 3;
 
     private static final Object LOCK = new Object();
     private static NewsNetworkDataSource sInstance;
@@ -43,6 +56,25 @@ public class NewsNetworkDataSource {
         Intent intentToFetch = new Intent(mContext, NewsSyncIntentService.class);
         mContext.startService(intentToFetch);
         Log.d(LOG_TAG, "Service created");
+    }
+
+    public void scheduleRecurringFetchNewsSync() {
+        Driver driver = new GooglePlayDriver(mContext);
+        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(driver);
+
+        Job syncNewsJob = dispatcher.newJobBuilder()
+                .setService(NewsFirebaseJobService.class)
+                .setTag(NEWS_SYNC_TAG)
+                .setConstraints(Constraint.ON_ANY_NETWORK)
+                .setLifetime(Lifetime.FOREVER)
+                .setRecurring(true)
+                .setTrigger(Trigger.executionWindow(SYNC_INTERVAL_SECONDS,
+                        SYNC_INTERVAL_SECONDS + SYNC_FLEXTIME_SECONDS))
+                .setReplaceCurrent(true)
+                .build();
+
+        dispatcher.schedule(syncNewsJob);
+        Log.d(LOG_TAG, "Job scheduled");
     }
 
     public LiveData<NewsEntry[]> getCurrentNews() {
