@@ -1,29 +1,58 @@
 package bkm.com.newsapp.ui.list;
 
 import android.databinding.BindingAdapter;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import bkm.com.newsapp.BR;
 import bkm.com.newsapp.R;
 import bkm.com.newsapp.data.database.entities.NewsEntry;
-import bkm.com.newsapp.ui.adapters.MyBaseAdapter;
 
-public class NewsAdapter extends MyBaseAdapter {
+public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
     private List<NewsEntry> mNewsEntries;
+    NewsAdapterListener newsAdapterListener;
 
-    public NewsAdapter(List<NewsEntry> data) {
+    public NewsAdapter(List<NewsEntry> data, NewsAdapterListener newsAdapterListener) {
         this.mNewsEntries = data;
+        this.newsAdapterListener = newsAdapterListener;
+    }
+
+    @NonNull
+    @Override
+    public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
+        ViewDataBinding binding = DataBindingUtil.inflate(
+                layoutInflater, viewType, viewGroup, false);
+        return new NewsViewHolder(binding);
     }
 
     @Override
+    public void onBindViewHolder(@NonNull NewsViewHolder newsAdapterViewHolder, int i) {
+        Object obj = getObjForPosition(i);
+        newsAdapterViewHolder.bind(obj);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return getLayoutIdForPosition(position);
+    }
+
     protected Object getObjForPosition(int position) {
         return mNewsEntries.get(position);
     }
 
-    @Override
     protected int getLayoutIdForPosition(int layoutId) {
         return R.layout.news_list_item;
     }
@@ -42,6 +71,11 @@ public class NewsAdapter extends MyBaseAdapter {
                 .into(view);
     }
 
+    @BindingAdapter("itemClick")
+    public static void itemClick(CardView cardView, NewsEntry newsEntry) {
+
+    }
+
     void swapNews(final List<NewsEntry> newsEntries) {
         mNewsEntries = newsEntries;
         notifyDataSetChanged();
@@ -51,6 +85,30 @@ public class NewsAdapter extends MyBaseAdapter {
         } else {
             mNewsEntries = newsEntries;
         }
+    }
 
+    class NewsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private final ViewDataBinding binding;
+
+        public NewsViewHolder(@NonNull ViewDataBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+            binding.getRoot().setOnClickListener(this);
+        }
+
+        public void bind(Object obj) {
+            binding.setVariable(BR.obj, obj);
+            binding.executePendingBindings();
+        }
+
+        @Override
+        public void onClick(View view) {
+            int adapterPosition = getAdapterPosition();
+            newsAdapterListener.onItemClicked(mNewsEntries.get(adapterPosition));
+        }
+    }
+
+    public interface NewsAdapterListener {
+        void onItemClicked(NewsEntry newsEntry);
     }
 }
