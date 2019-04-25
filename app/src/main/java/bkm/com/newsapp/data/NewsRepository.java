@@ -78,7 +78,7 @@ public class NewsRepository {
     }
 
     private void starFetchNewsService() {
-        mNewsNetworkDataSource.startFetchNewsService();
+        mNewsNetworkDataSource.startFetchNewsSercice();
     }
 
     public LiveData<List<NewsEntry>> getCurrentNews() {
