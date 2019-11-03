@@ -1,6 +1,6 @@
 package bkm.com.newsapp.data.network;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import bkm.com.newsapp.data.database.entities.NewsEntry;
 

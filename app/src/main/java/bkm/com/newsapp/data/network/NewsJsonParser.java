@@ -1,7 +1,6 @@
 package bkm.com.newsapp.data.network;
 
-import android.support.annotation.Nullable;
-import android.util.JsonReader;
+import androidx.annotation.Nullable;
 
 import org.json.JSONArray;
 import org.json.JSONException;

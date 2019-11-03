@@ -14,7 +14,7 @@ class NetworkUtils {
         var NEWS_BASE_URL: String = DYNAMIC_TOP_NEWS_URL
 
         var country: String = "us"
-        var apiKey: String = "3a818a4af8524a88b96509a5a3e3ae85"
+        var apiKey: String = "93507bb1709a487f885bd517460ca1ab"
         var COUNTRY_PARAM: String = "country"
         var API_KEY_PARAM: String = "apiKey"
 

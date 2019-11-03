@@ -1,7 +1,7 @@
 package bkm.com.newsapp.data.network
 
 import android.os.Build
-import android.support.annotation.RequiresApi
+import androidx.annotation.RequiresApi
 import bkm.com.newsapp.utilities.InjectorUtils
 import com.firebase.jobdispatcher.JobParameters
 import com.firebase.jobdispatcher.JobService

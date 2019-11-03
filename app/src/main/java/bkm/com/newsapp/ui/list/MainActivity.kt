@@ -1,13 +1,13 @@
 package bkm.com.newsapp.ui.list
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.Toast
 import bkm.com.newsapp.R
@@ -26,16 +26,23 @@ class MainActivity : AppCompatActivity(), NewsAdapter.NewsAdapterListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var factory = InjectorUtils.provideMainActivityViewModelFactory(this)
+        val factory = InjectorUtils.provideMainActivityViewModelFactory(this)
         mViewModel = ViewModelProviders.of(this, factory).get(MainActivityViewModel::class.java)
         mMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         setUpUI()
-        mViewModel.news.observe(this, Observer { newsEntries -> if (newsEntries != null) populateData(newsEntries) })
+        mViewModel.news.observe(
+            this,
+            Observer { newsEntries -> if (newsEntries != null) populateData(newsEntries) })
     }
 
     fun setUpUI() {
-        val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val layoutManager: RecyclerView.LayoutManager =
+            LinearLayoutManager(
+                this,
+                LinearLayoutManager.VERTICAL,
+                false
+            )
         mMainBinding.recyclerviewNews.layoutManager = layoutManager
         mNewsAdapter = NewsAdapter(null, this)
         showLoading()

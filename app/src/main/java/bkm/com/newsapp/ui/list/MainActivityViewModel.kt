@@ -1,7 +1,7 @@
 package bkm.com.newsapp.ui.list
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import bkm.com.newsapp.data.NewsRepository
 import bkm.com.newsapp.data.database.entities.NewsEntry
 

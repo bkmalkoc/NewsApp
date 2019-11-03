@@ -1,7 +1,7 @@
 package bkm.com.newsapp.ui.list
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import bkm.com.newsapp.data.NewsRepository
 
 class MainViewModelFactory(val newsRepository: NewsRepository) : ViewModelProvider.NewInstanceFactory() {
